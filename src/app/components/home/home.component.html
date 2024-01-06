@@ -1,0 +1,28 @@
+<div class="d-flex flex-column gap-3 bg-body-tertiary p-5 rounded-2">
+  <h1 class="">
+    Counter : <span>{{ counter }}</span>
+  </h1>
+
+  <h1>
+    User : <span>{{ user == null ? "null" : "" }}</span>
+  </h1>
+
+  <table *ngIf="user" class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone Number</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>
+          {{ user.name }}
+        </th>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phoneNumber }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

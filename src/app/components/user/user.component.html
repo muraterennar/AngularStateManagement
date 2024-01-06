@@ -1,0 +1,64 @@
+<form
+  class="d-flex flex-column justify-content-center align-items-center gap-3 user-div text-start"
+>
+  <div class="mb-3 w-50">
+    <label for="userName" class="form-label">Name</label>
+    <input
+      [value]="userData?.name"
+      type="text"
+      class="form-control"
+      id="userName"
+      #name
+    />
+  </div>
+
+  <div class="mb-3 w-50">
+    <label for="email" class="form-label">Email</label>
+    <input
+      [value]="userData?.email"
+      type="email"
+      class="form-control"
+      id="email"
+      #email
+    />
+  </div>
+
+  <div class="mb-3 w-50">
+    <label for="phoneNumber" class="form-label">Phone Number</label>
+    <input
+      [value]="userData?.phoneNumber"
+      type="text"
+      class="form-control"
+      id="phoneNumber"
+      #phoneNumber
+    />
+  </div>
+
+  <div class="mb-3 w-50">
+    <label for="password" class="form-label">Password</label>
+    <input
+      [value]="userData?.password"
+      type="password"
+      class="form-control"
+      id="password"
+      #password
+    />
+  </div>
+
+  <div class="float-start w-50">
+    <button
+      type="submit"
+      (click)="
+        submitHandler(
+          name.value,
+          email.value,
+          phoneNumber.value,
+          password.value
+        )
+      "
+      class="btn btn-primary px-5"
+    >
+      Update
+    </button>
+  </div>
+</form>
