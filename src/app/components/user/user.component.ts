@@ -29,8 +29,8 @@ export class UserComponent implements OnInit, OnDestroy {
 
   submitHandler(name: string, email: string, phoneNumber: string, password: string) {
 
-    this.userState.dispatch(actionUpdateUser({ user: { id: this.guidGenerator(), name: name, email: email, phoneNumber: phoneNumber, password: password } }))
-    console.log({ id: this.guidGenerator(), name: name, email: email, phoneNumber: phoneNumber, password: password });
+    this.userState.dispatch(actionUpdateUser({ user: { id: guidGenerator(), name: name, email: email, phoneNumber: phoneNumber, password: password } }))
+    console.log({ id: guidGenerator(), name: name, email: email, phoneNumber: phoneNumber, password: password });
 
     this.router.navigate(["/"])
   }
@@ -39,12 +39,13 @@ export class UserComponent implements OnInit, OnDestroy {
     this.userSubscription.unsubscribe();
   }
 
+}
 
   // -------- GUID Generator ----------
-  guidGenerator() {
+  export const guidGenerator = () => {
     const characters = '0123456789abcdef';
 
-    let guid = '';
+    let guid:string = '';
 
     for (let i = 0; i < 36; i++) {
       if (i === 8 || i === 13 || i === 18 || i === 23) {
@@ -62,4 +63,3 @@ export class UserComponent implements OnInit, OnDestroy {
 
     return guid;
   }
-}
