@@ -1,7 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { ProductState } from "./product.state";
 import { productActionAdd, productActionRemove, productActionUpdate, productActionUpdateCurrency } from "./product.action";
-import { state } from "@angular/animations";
 import { ProductModel } from "src/app/models/ProductModel";
 import { guidGenerator } from "../../user/user.component";
 
@@ -9,8 +8,9 @@ const initialProductState: ProductState = {
     productList: [
         {id:guidGenerator(), productName:"Samsung S5", price:1000, description:"Samsung S5 Description", imageUrl:"https://via.placeholder.com/500x500"},
     ],
-    currencyCode: "TR"
-}
+    currencyCodes: ["USD", "EUR", "TRY"],
+    selectedCurrencyCode: "USD"
+};
 
 export const productReducer = createReducer<ProductState>(
     initialProductState,
@@ -31,8 +31,8 @@ export const productReducer = createReducer<ProductState>(
         return {...state,productList:updatedProductList};
     }),   
 
-    //Update Currency
+    //Update Currency Code
     on(productActionUpdateCurrency, (state,action):ProductState=>{
-        return {...state, currencyCode:action.currencyCode};
+        return {...state, selectedCurrencyCode:action.selectedCurrencyCode};
     }),
 )

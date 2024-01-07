@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ProductState } from '../state/product.state';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ProductModel } from 'src/app/models/ProductModel';
-import { getProductByIdSelector, getProductListSelector } from '../state/product.selector';
+import { getProductByIdSelector, getProductListSelector, getProductSelectedCurrenySelector } from '../state/product.selector';
 import { productActionAdd, productActionRemove, productActionUpdate } from '../state/product.action';
 import { guidGenerator } from '../../user/user.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -13,12 +13,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './product-a.component.html',
   styleUrls: ['./product-a.component.css']
 })
-export class ProductAComponent implements OnInit, OnDestroy {
+export class ProductAComponent implements OnInit {
 
-  products:ProductModel[];
+  products:Observable<ProductModel[]>;
   getProductByIdData:ProductModel;
   productSubscription:Subscription;
   productForm:FormGroup;
+
+  currentCurrency:Observable<string>;
 
   constructor(private productStore:Store<ProductState>, private form:FormBuilder) {}
 
@@ -28,11 +30,10 @@ export class ProductAComponent implements OnInit, OnDestroy {
     this.createProductForm();
 
     // Get Product List
-    this.productSubscription = this.productStore.select(getProductListSelector).subscribe(p=> this.products = p)
-  }
+    this.products = this.productStore.select(getProductListSelector);
 
-  ngOnDestroy(): void {
-    this.productSubscription.unsubscribe();
+    // Get Selected Currency Code
+    this.currentCurrency = this.productStore.select(getProductSelectedCurrenySelector);
   }
 
   // Produt Form
