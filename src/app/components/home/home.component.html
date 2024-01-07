@@ -49,10 +49,10 @@
               <ng-container *ngIf="products | async; else noData">
                 <tr *ngFor="let product of products | async" class="table-light">
                   <td class="">
-                    <img [src]="product.imageUrl" class="img-fluid w-auto rounded" style="max-width: 100px;"
+                    <img [src]="product.image" class="img-fluid w-auto rounded" style="max-width: 100px;"
                       alt="image desc" />
                   </td>
-                  <td>{{product.productName}}</td>
+                  <td>{{product.title}}</td>
                   <td>{{product.description}}</td>
                   <td>
                     {{ product.price }}

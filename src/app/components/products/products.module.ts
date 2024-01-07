@@ -5,6 +5,9 @@ import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { productReducer } from './state/product.reducer';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { EffectsModule } from '@ngrx/effects';
+import { ProductEffect } from './state/product.effect';
 
 
 
@@ -14,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   imports: [
     CommonModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild(
@@ -21,7 +25,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         {path:"", component:ProductAComponent}
       ]
     ),
-    StoreModule.forFeature("productReducerSlice", productReducer)
+    StoreModule.forFeature("productReducerSlice", productReducer),
+    EffectsModule.forFeature([ProductEffect])
   ],
   exports: [
     ProductAComponent

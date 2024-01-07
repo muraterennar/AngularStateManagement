@@ -14,6 +14,7 @@
                         <tr>
                             <th>Img</th>
                             <th>Name</th>
+                            <th>Category</th>
                             <th>Description</th>
                             <th>Price</th>
                             <th colspan="2"></th>
@@ -23,26 +24,27 @@
                         <ng-container *ngIf="products && (products | async).length > 0; else noData">
                             <tr *ngFor="let product of products | async" class="table-light">
                                 <td class="">
-                                    <img [src]="product.imageUrl" class="img-fluid w-auto rounded"
+                                    <img [src]="product.image" class="img-fluid w-auto rounded"
                                         style="max-width: 100px;" alt="image desc" />
                                 </td>
-                                <td>{{product.productName}}</td>
-                                <td>{{product.description}}</td>
+                                <td>{{product?.title}}</td>
+                                <td>{{product?.category}}</td>
+                                <td>{{product?.description}}</td>
                                 <td>
-                                    {{ product.price }}
+                                    {{ product?.price }}
                                     {{ (currentCurrency | async) === 'USD' ? '$' : (currentCurrency | async) === 'TRY' ?
                                     '₺' :
                                     (currentCurrency | async) === 'EUR' ? '€' : '' }}
                                 </td>
                                 <td>
                                     <button type="button" class="btn fs-4" data-bs-toggle="modal"
-                                        data-bs-target="#productUpdateModal" (click)="getProductById(product.id)">
+                                        data-bs-target="#productUpdateModal" (click)="getProductById(product?.id)">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
                                 </td>
                                 <td>
                                     <button type="button" class="btn fs-4" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal" (click)="getProductById(product.id)">
+                                        data-bs-target="#deleteModal" (click)="getProductById(product?.id)">
                                         <i class="bi bi-trash3"></i>
                                     </button>
                                 </td>
@@ -77,9 +79,17 @@
                     <div class="modal-body">
                         <div class="col">
                             <div class="mb-3">
-                                <label for="productName" class="form-label">Product Name</label>
-                                <input type="text" name="productName" id="productName" class="form-control"
-                                    formControlName="productName" aria-describedby="helpId" />
+                                <label for="title" class="form-label">Product Name</label>
+                                <input type="text" name="title" id="title" class="form-control"
+                                    formControlName="title" aria-describedby="helpId" />
+                                <small id="helpId" class="text-muted">Help text</small>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Category</label>
+                                <input type="text" name="category" id="category" class="form-control"
+                                    formControlName="category" aria-describedby="helpId" />
                                 <small id="helpId" class="text-muted">Help text</small>
                             </div>
                         </div>
@@ -121,10 +131,19 @@
                     <div class="modal-body">
                         <div class="col">
                             <div class="mb-3">
-                                <label for="productName" class="form-label">Product Name</label>
-                                <input type="text" name="productName" id="productName" class="form-control"
-                                    formControlName="productName" aria-describedby="helpId"
-                                    [value]="getProductByIdData?.productName" />
+                                <label for="title" class="form-label">Product Name</label>
+                                <input type="text" name="title" id="title" class="form-control"
+                                    formControlName="title" aria-describedby="helpId"
+                                    [value]="getProductByIdData?.title" />
+                                <small id="helpId" class="text-muted">Help text</small>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Product Name</label>
+                                <input type="text" name="category" id="category" class="form-control"
+                                    formControlName="category" aria-describedby="helpId"
+                                    [value]="getProductByIdData?.category" />
                                 <small id="helpId" class="text-muted">Help text</small>
                             </div>
                         </div>
@@ -164,7 +183,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p><span class="fw-bold border-bottom">{{getProductByIdData?.productName}}</span> ürününü silmek
+                    <p><span class="fw-bold border-bottom">{{getProductByIdData?.title}}</span> ürününü silmek
                         istediğinize emin misiniz ?</p>
                 </div>
                 <div class="modal-footer">

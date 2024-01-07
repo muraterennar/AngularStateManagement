@@ -6,3 +6,6 @@ export const productActionUpdate = createAction("Update Product", props<{ produc
 export const productActionRemove = createAction("Remove Product", props<{ productId:string }>());
 
 export const productActionUpdateCurrency = createAction("Update Currency", props<{ selectedCurrencyCode:string }>());
+
+export const productActionLoad = createAction("Load Products");
+export const productActionLoadSuccess = createAction("Load Products Success", props<{ products: ProductModel[] }>());

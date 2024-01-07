@@ -4,7 +4,7 @@ import { ProductState } from '../state/product.state';
 import { Observable, Subscription } from 'rxjs';
 import { ProductModel } from 'src/app/models/ProductModel';
 import { getProductByIdSelector, getProductListSelector, getProductSelectedCurrenySelector } from '../state/product.selector';
-import { productActionAdd, productActionRemove, productActionUpdate } from '../state/product.action';
+import { productActionAdd, productActionLoad, productActionRemove, productActionUpdate } from '../state/product.action';
 import { guidGenerator } from '../../user/user.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -29,6 +29,8 @@ export class ProductAComponent implements OnInit {
     // Create Product Form
     this.createProductForm();
 
+    this.productStore.dispatch(productActionLoad())
+
     // Get Product List
     this.products = this.productStore.select(getProductListSelector);
 
@@ -39,9 +41,10 @@ export class ProductAComponent implements OnInit {
   // Produt Form
    createProductForm(){
     this.productForm = this.form.group({
-      productName:["", [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      title:["", [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       price:[0, Validators.min(0)],
-      description:["",[Validators.minLength(3), Validators.maxLength(50)]]
+      description:["",[Validators.minLength(3), Validators.maxLength(50)]],
+      category:["",[Validators.minLength(3), Validators.maxLength(50)]]
     });
   }
 
@@ -50,10 +53,11 @@ export class ProductAComponent implements OnInit {
     if(this.productForm.valid){
       const newProduct:ProductModel ={
         id:guidGenerator(),
-        productName:this.productForm.value.productName,
+        title:this.productForm.value.title,
         price:this.productForm.value.price,
         description:this.productForm.value.description,
-        imageUrl:"https://via.placeholder.com/500x500"
+        category:"elektronik",
+        image:"https://via.placeholder.com/500x500"
       }
   
       this.productStore.dispatch(productActionAdd({
@@ -74,10 +78,11 @@ export class ProductAComponent implements OnInit {
     if(this.productForm.valid){
       const updatedProduct:ProductModel ={
         id:this.getProductByIdData.id,
-        productName:this.productForm.value.productName,
+        title:this.productForm.value.title,
         price:this.productForm.value.price,
         description:this.productForm.value.description,
-        imageUrl:"https://via.placeholder.com/500x500"
+        category:this.getProductByIdData.category,
+        image:"https://via.placeholder.com/500x500"
       }
   
       this.productStore.dispatch(productActionUpdate({

@@ -1,13 +1,11 @@
 import { createReducer, on } from "@ngrx/store";
 import { ProductState } from "./product.state";
-import { productActionAdd, productActionRemove, productActionUpdate, productActionUpdateCurrency } from "./product.action";
+import { productActionAdd, productActionLoadSuccess, productActionRemove, productActionUpdate, productActionUpdateCurrency } from "./product.action";
 import { ProductModel } from "src/app/models/ProductModel";
 import { guidGenerator } from "../../user/user.component";
 
 const initialProductState: ProductState = {
-    productList: [
-        {id:guidGenerator(), productName:"Samsung S5", price:1000, description:"Samsung S5 Description", imageUrl:"https://via.placeholder.com/500x500"},
-    ],
+    productList:[],
     currencyCodes: ["USD", "EUR", "TRY"],
     selectedCurrencyCode: "USD"
 };
@@ -35,4 +33,8 @@ export const productReducer = createReducer<ProductState>(
     on(productActionUpdateCurrency, (state,action):ProductState=>{
         return {...state, selectedCurrencyCode:action.selectedCurrencyCode};
     }),
+
+    on(productActionLoadSuccess, (state, action):ProductState=>{
+        return {...state, productList:action.products};
+    } )
 )

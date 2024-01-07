@@ -38,7 +38,9 @@ import { CommonModule } from '@angular/common';
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
 
   ],
-  providers: [],
+  providers: [
+    { provide: "baseUrl", useValue: "https://fakestoreapi.com/products"}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
