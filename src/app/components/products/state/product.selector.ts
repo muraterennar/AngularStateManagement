@@ -6,6 +6,14 @@ const getProductState  = createFeatureSelector<ProductState>("productReducerSlic
 // Get Product List
 export const getProductListSelector = createSelector(getProductState, state => state.productList);
 
+// Get Loading
+export const getProductLoadingSelector = createSelector(getProductState, state => state.loading);
+
+export const updateProductLoadingSelector = createSelector(getProductState, state => state.updateLoading);
+
+// Get Error
+export const getProductErrorSelector = createSelector(getProductState, state => state.error);
+
 // Get Currency Codes
 export const getProductCurrenyListSelector = createSelector(getProductState, state => state.currencyCodes);
 
@@ -14,3 +22,4 @@ export const getProductSelectedCurrenySelector = createSelector(getProductState,
 
 // Get Product By Id
 export const getProductByIdSelector = (id:string) => createSelector(getProductState, state => state.productList.find(p=>p.id === id));
+

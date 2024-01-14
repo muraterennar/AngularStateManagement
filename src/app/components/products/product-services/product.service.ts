@@ -10,13 +10,18 @@ export class ProductService {
 
   constructor(
     private http: HttpClient,
-    @Inject('baseUrl') private baseUrl:string
+    @Inject('baseUrl') private baseUrl: string
   ) { }
 
 
   // Get all products
   getAllProducts(): Observable<ProductModel[]> {
-   const observable:Observable<ProductModel[]> =  this.http.get<ProductModel[]>(this.baseUrl);
-   return observable
+    const observable: Observable<ProductModel[]> = this.http.get<ProductModel[]>(this.baseUrl);
+    return observable
+  }
+
+  updateProduct(product:Partial<ProductModel>): Observable<ProductModel> {
+    const observable: Observable<ProductModel> = this.http.post<ProductModel>(this.baseUrl, product, { responseType: 'json' });
+    return observable
   }
 }

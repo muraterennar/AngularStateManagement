@@ -29,9 +29,7 @@ export class UserComponent implements OnInit, OnDestroy {
 
   submitHandler(name: string, email: string, phoneNumber: string, password: string) {
 
-    this.userState.dispatch(actionUpdateUser({ user: { id: guidGenerator(), name: name, email: email, phoneNumber: phoneNumber, password: password } }))
-    console.log({ id: guidGenerator(), name: name, email: email, phoneNumber: phoneNumber, password: password });
-
+    this.userState.dispatch(actionUpdateUser({ user: { id: guidGenerator(), name: name, email: email, phoneNumber: phoneNumber, password: password } }));
     this.router.navigate(["/"])
   }
 

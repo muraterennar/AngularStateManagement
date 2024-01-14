@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ProductState } from '../state/product.state';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, take } from 'rxjs';
 import { ProductModel } from 'src/app/models/ProductModel';
-import { getProductByIdSelector, getProductListSelector, getProductSelectedCurrenySelector } from '../state/product.selector';
-import { productActionAdd, productActionLoad, productActionRemove, productActionUpdate } from '../state/product.action';
+import { getProductByIdSelector, getProductErrorSelector, getProductListSelector, getProductLoadingSelector, getProductSelectedCurrenySelector, updateProductLoadingSelector } from '../state/product.selector';
+import { productActionAdd, productActionLoad, productActionRemove, productActionUpdate, productActionUpdateOnSuceess } from '../state/product.action';
 import { guidGenerator } from '../../user/user.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -13,89 +13,132 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './product-a.component.html',
   styleUrls: ['./product-a.component.css']
 })
-export class ProductAComponent implements OnInit {
+export class ProductAComponent implements OnInit, OnDestroy {
 
-  products:Observable<ProductModel[]>;
-  getProductByIdData:ProductModel;
-  productSubscription:Subscription;
-  productForm:FormGroup;
+  products: ProductModel[];
+  getProductByIdData: ProductModel;
+  loading: boolean;
+  error: any | undefined;
 
-  currentCurrency:Observable<string>;
+  productSubscription: Subscription;
+  productForm: FormGroup;
 
-  constructor(private productStore:Store<ProductState>, private form:FormBuilder) {}
+  currentCurrency: Observable<string>;
+
+  constructor(private productStore: Store<ProductState>, private form: FormBuilder) { }
 
 
   ngOnInit(): void {
     // Create Product Form
     this.createProductForm();
 
-    this.productStore.dispatch(productActionLoad())
+    // Get Products
+    this.getProducts();
 
-    // Get Product List
-    this.products = this.productStore.select(getProductListSelector);
+    this.loadingProduct();
+
+    this.errorProduct();
 
     // Get Selected Currency Code
     this.currentCurrency = this.productStore.select(getProductSelectedCurrenySelector);
   }
 
+  ngOnDestroy(): void {
+    this.productSubscription.unsubscribe();
+  }
+
   // Produt Form
-   createProductForm(){
+  createProductForm() {
     this.productForm = this.form.group({
-      title:["", [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      price:[0, Validators.min(0)],
-      description:["",[Validators.minLength(3), Validators.maxLength(50)]],
-      category:["",[Validators.minLength(3), Validators.maxLength(50)]]
+      title: ["", [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      price: ["", Validators.min(0)],
+      description: ["", [Validators.minLength(3), Validators.maxLength(50)]],
+      category: ["", [Validators.minLength(3), Validators.maxLength(50)]]
+    });
+  }
+
+  // Get Form Control
+  get component():any {
+    return this.productForm.controls;
+  }
+
+  // Get Products
+  getProducts() {
+    // Get Product List
+    this.productSubscription = this.productStore.select(getProductListSelector).subscribe(p => {
+      this.products = p;
+
+      if (p.length === 0) {-
+        this.productStore.dispatch(productActionLoad());
+      }
+    });
+  }
+
+  loadingProduct() {
+    this.productSubscription = this.productStore.select(getProductLoadingSelector).subscribe(loading => this.loading = loading);
+    this.productSubscription = this.productStore.select(updateProductLoadingSelector).subscribe(loading => this.loading = loading);
+  }
+
+  errorProduct() {
+    this.productSubscription = this.productStore.select(getProductErrorSelector).subscribe(err => {
+      if (err !== undefined) {
+        this.error = err
+        alert(err.message);
+        console.log(err);
+      }
+    });
+  }
+
+  // Get Product By Id
+  getProductById(id: string) {
+    this.productSubscription = this.productStore.select(getProductByIdSelector(id)).subscribe(p => {
+      this.getProductByIdData = p;
     });
   }
 
   // Add Product
-  addProduct(){
-    if(this.productForm.valid){
-      const newProduct:ProductModel ={
-        id:guidGenerator(),
-        title:this.productForm.value.title,
-        price:this.productForm.value.price,
-        description:this.productForm.value.description,
-        category:"elektronik",
-        image:"https://via.placeholder.com/500x500"
+  addProduct() {
+    if (this.productForm.valid) {
+      const newProduct: ProductModel = {
+        id: guidGenerator(),
+        title: this.productForm.value.title,
+        price: this.productForm.value.price,
+        description: this.productForm.value.description,
+        category: "elektronik",
+        image: "https://via.placeholder.com/500x500"
       }
-  
+
       this.productStore.dispatch(productActionAdd({
-        product:newProduct
+        product: newProduct
       }));
     }
-  }
-
-  // Get Product By Id
-  getProductById(id:string){
-    this.productSubscription = this.productStore.select(getProductByIdSelector(id)).subscribe(p=>this.getProductByIdData = p);
-    console.log("Get Product By Id", this.getProductByIdData);
   }
 
   // Update Product
-  updateProduct(){
+  updateProduct() {
     console.log("Update Product");
-    if(this.productForm.valid){
-      const updatedProduct:ProductModel ={
-        id:this.getProductByIdData.id,
-        title:this.productForm.value.title,
-        price:this.productForm.value.price,
-        description:this.productForm.value.description,
-        category:this.getProductByIdData.category,
-        image:"https://via.placeholder.com/500x500"
+      const updatedProduct: ProductModel = {
+        id: this.getProductByIdData.id,
+        title: this.productForm.value.title,
+        price: this.productForm.value.price,
+        description: this.productForm.value.description,
+        category: this.productForm.value.category,
+        image: this.getProductByIdData.image
       }
-  
-      this.productStore.dispatch(productActionUpdate({
-        product:updatedProduct
+
+      this.productStore.dispatch(productActionUpdateOnSuceess({
+       product: updatedProduct
       }));
-    }
+
+      console.log("Update Product", updatedProduct);
+    
   }
 
   // Delete Product
-  deleteProduct(id:string){
+  deleteProduct(id: string) {
     console.log("Delete Product");
     this.productStore.dispatch(productActionRemove({
-      productId:id
+      productId: id
     }))
   }
 }
