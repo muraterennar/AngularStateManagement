@@ -1,27 +1,39 @@
-# AngularStateManagement
+# Angular ve NGRX ile Güçlü State Management Deneyimi!
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.5.
+## Merhabalar! 👋
 
-## Development server
+Bu README dosyası, Angular ve NGRX kullanarak geliştirdiğim son proje hakkında detaylı bilgiler içermektedir.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### Proje Detayları
 
-## Code scaffolding
+#### Counter Sayfası 📈
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Projenin başlangıcında, temel NGRX konseptlerini anlamak için basit bir counter sayfası oluşturuldu. Bu sayede NGRX'nin nimetlerini anlamak ve kullanmak için güçlü bir temel oluşturuldu. Ayrıca, counter sayfasındaki değişikliklerin home sayfasında anında görüntülenmesi sağlandı.
 
-## Build
+#### Kullanıcı Yönetimi 👥
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Daha sonra, NGRX'nin gücünü kullanarak global bir state yönetimi kurularak kullanıcılar projeye eklendi. Bu sayede, uygulama genelinde kullanıcıları tutmak ve home sayfasında bu verileri dinamik olarak göstermek mümkün oldu.
 
-## Running unit tests
+#### Modüler State Management 🔄
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Projenin bir sonraki aşamasında, NGRX'nin modüler yapısını kullanarak product componenti için özel bir state management oluşturuldu. Bu, etkileşimli bir arayüz ile ürünleri eklemek, güncellemek ve silmek için kullanıldı. Reactive forms kullanılarak, component içindeki state'in Appstate ile bağlanması ve gerçek bir API çağrısının NGRX effect ile yönetilmesi sağlandı.
 
-## Running end-to-end tests
+### Teknoloji Stack
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- Angular
+- NGRX
+- Reactive Forms
+- NGRX Effects
 
-## Further help
+### Öğrenme Deneyimi 👩‍💻
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Bu proje geliştirilirken, Angular ve NGRX ile state management konularında derinlemesine bir anlayış elde edildimiştir.
+
+### Canlı Demo 🔥
+
+Projenin canlı demo versiyonunu incelemek ve etkileşimli olarak deneyimlemek için aşağıdaki bağlantıyı ziyaret edebilirsiniz:
+[Canlı Demo Bağlantısı](https://angular-state-management-eight.vercel.app/)
+
+### LinkedIn Profilim 🔗
+
+[muraterennar](www.linkedin.com/in/muraterennar)
