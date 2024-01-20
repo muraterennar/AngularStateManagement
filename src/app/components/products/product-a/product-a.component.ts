@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ProductState } from '../state/product.state';
-import { Observable, Subscription, take } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ProductModel } from 'src/app/models/ProductModel';
-import { getProductByIdSelector, getProductErrorSelector, getProductListSelector, getProductLoadingSelector, getProductSelectedCurrenySelector, updateProductLoadingSelector } from '../state/product.selector';
-import { productActionAdd, productActionLoad, productActionRemove, productActionUpdate, productActionUpdateOnSuceess } from '../state/product.action';
+import { getProductByIdSelector, getProductErrorSelector, getProductListSelector, getProductLoadingSelector, getProductSelectedCurrenySelector } from '../state/product.selector';
+import { productActionAdd, productActionDeleteSuccess, productActionLoad, productActionUpdate, productActionUpdateSuccess } from '../state/product.action';
 import { guidGenerator } from '../../user/user.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -18,6 +18,7 @@ export class ProductAComponent implements OnInit, OnDestroy {
   products: ProductModel[];
   getProductByIdData: ProductModel;
   loading: boolean;
+  updatedLoading: boolean;
   error: any | undefined;
 
   productSubscription: Subscription;
@@ -58,7 +59,7 @@ export class ProductAComponent implements OnInit, OnDestroy {
   }
 
   // Get Form Control
-  get component():any {
+  get component(): any {
     return this.productForm.controls;
   }
 
@@ -68,15 +69,15 @@ export class ProductAComponent implements OnInit, OnDestroy {
     this.productSubscription = this.productStore.select(getProductListSelector).subscribe(p => {
       this.products = p;
 
-      if (p.length === 0) {-
-        this.productStore.dispatch(productActionLoad());
+      if (p.length === 0) {
+        -
+          this.productStore.dispatch(productActionLoad());
       }
     });
   }
 
   loadingProduct() {
     this.productSubscription = this.productStore.select(getProductLoadingSelector).subscribe(loading => this.loading = loading);
-    this.productSubscription = this.productStore.select(updateProductLoadingSelector).subscribe(loading => this.loading = loading);
   }
 
   errorProduct() {
@@ -99,46 +100,50 @@ export class ProductAComponent implements OnInit, OnDestroy {
   // Add Product
   addProduct() {
     if (this.productForm.valid) {
-      const newProduct: ProductModel = {
+      const product: ProductModel = {
         id: guidGenerator(),
         title: this.productForm.value.title,
         price: this.productForm.value.price,
         description: this.productForm.value.description,
         category: "elektronik",
         image: "https://via.placeholder.com/500x500"
-      }
+      };
 
-      this.productStore.dispatch(productActionAdd({
-        product: newProduct
-      }));
+      this.productStore.dispatch(productActionAdd({ product }));
+
+      console.log(product);
+    }
+    else {
+      alert("Form is invalid!")
     }
   }
 
-  // Update Product
-  updateProduct() {
-    console.log("Update Product");
-      const updatedProduct: ProductModel = {
-        id: this.getProductByIdData.id,
-        title: this.productForm.value.title,
-        price: this.productForm.value.price,
-        description: this.productForm.value.description,
-        category: this.productForm.value.category,
-        image: this.getProductByIdData.image
-      }
+  // Update Currency
+  updateProduct(title: string, category: string, price: string, description: string,) {
+    const updatedProduct: ProductModel = {
+      id: this.getProductByIdData?.id,
+      title: title,
+      price: parseInt(price),
+      description: description,
+      category: category,
+      image: this.getProductByIdData?.image
+    }
+    debugger;
+    this.productStore.dispatch(productActionUpdateSuccess({ product: updatedProduct }));
 
-      this.productStore.dispatch(productActionUpdateOnSuceess({
-       product: updatedProduct
-      }));
-
-      console.log("Update Product", updatedProduct);
-    
+    console.log({
+      id: this.getProductByIdData.id,
+      title,
+      category,
+      price: parseInt(price),
+      description,
+      image: this.getProductByIdData.image
+    });
   }
 
   // Delete Product
   deleteProduct(id: string) {
-    console.log("Delete Product");
-    this.productStore.dispatch(productActionRemove({
-      productId: id
-    }))
+    debugger;
+    this.productStore.dispatch(productActionDeleteSuccess({ id }));
   }
 }

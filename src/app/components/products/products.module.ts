@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { ProductAComponent } from './product-a/product-a.component';
 import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
-import { productReducer } from './state/product.reducer';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
 import { ProductEffect } from './state/product.effect';
+import { productReducer } from './state/product.reducer';
 
 
 

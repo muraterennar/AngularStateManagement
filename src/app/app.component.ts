@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ProductState } from './components/products/state/product.state';
 import { Observable } from 'rxjs';
-import { getProductCurrenyListSelector, getProductSelectedCurrenySelector } from './components/products/state/product.selector';
 import { productActionUpdateCurrency } from './components/products/state/product.action';
+import { getProductCurrenyListSelector, getProductSelectedCurrenySelector } from './components/products/state/product.selector';
 
 @Component({
   selector: 'app-root',

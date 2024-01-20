@@ -10,8 +10,8 @@ import { counterReducer, userReducer } from './state/app.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { CounterModule } from './components/counter/counter.module';
 import { UserModule } from './components/user/user.module';
-import { ProductsModule } from './components/products/products.module';
 import { CommonModule } from '@angular/common';
+import { ProductsModule } from './components/products/products.module';
 
 @NgModule({
   declarations: [

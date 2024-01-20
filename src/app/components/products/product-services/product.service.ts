@@ -20,8 +20,21 @@ export class ProductService {
     return observable
   }
 
-  updateProduct(product:Partial<ProductModel>): Observable<ProductModel> {
+  // Update Product
+  updateProduct(product: Partial<ProductModel>): Observable<ProductModel> {
     const observable: Observable<ProductModel> = this.http.post<ProductModel>(this.baseUrl, product, { responseType: 'json' });
+    return observable
+  }
+
+  // Add Product
+  addProduct(product: ProductModel): Observable<ProductModel> {
+    const observable: Observable<ProductModel> = this.http.post<ProductModel>(this.baseUrl, product, { responseType: 'json' });
+    return observable;
+  }
+
+  // Delete Product
+  deleteProduct(productId: string): Observable<ProductModel> {
+    const observable: Observable<ProductModel> = this.http.delete<ProductModel>(this.baseUrl + "/" + productId, { responseType: 'json' });
     return observable
   }
 }

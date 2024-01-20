@@ -1,4 +1,4 @@
-<div *ngIf="loading"
+<div *ngIf="loading || updatedLoading"
     class="position-fixed top-0 start-0 w-100 h-100 bg-light d-flex justify-content-center align-items-center">
     <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
@@ -11,17 +11,16 @@
 </div>
 
 
-<div class="container" *ngIf="!loading && !error">
+<div class="container" *ngIf="!loading && !error && !updatedLoading">
     <h2 class="text-center my-5 border-bottom border-secondary-subtle pb-3 ">Product A</h2>
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-outline-primary mb-5" data-bs-toggle="modal" data-bs-target="#productAddModal">
+    <button type="button" class="btn btn-outline-primary mb-5" data-bs-toggle="modal" data-bs-target="#addProductModal">
         Add Product
     </button>
 
     <div class="row">
         <div class="col-12">
-
             <div class="table-responsive overflow-auto rounded rounded-3 border border-secondary-subtle overflow-auto ">
                 <table class="table table-striped table-hover table-borderless table-light align-middle h-100">
                     <thead class="table-light">
@@ -80,64 +79,62 @@
 
     </div>
 
-    <!-- Add Modal -->
-    <div class="modal fade" id="productAddModal" tabindex="-1" aria-labelledby="productAddModalLabel"
+
+    <!-- Add Product Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form [formGroup]="productForm" (ngSubmit)="addProduct()">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="productAddModalLabel">Add Product</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="col">
                             <div class="mb-3">
                                 <label for="title" class="form-label">Product Name</label>
-                                <input type="text" name="title" id="title" class="form-control" formControlName="title"
-                                    aria-describedby="helpId" />
-                                <small id="helpId" class="text-muted">Help text</small>
+                                <input type="text" name="title" id="title" class="form-control"
+                                    formControlName="title" />
                             </div>
                         </div>
                         <div class="col">
                             <div class="mb-3">
                                 <label for="category" class="form-label">Category</label>
                                 <input type="text" name="category" id="category" class="form-control"
-                                    formControlName="category" aria-describedby="helpId" />
-                                <small id="helpId" class="text-muted">Help text</small>
+                                    formControlName="category" />
                             </div>
                         </div>
                         <div class="col">
                             <div class="mb-3">
                                 <label for="price" class="form-label">Price</label>
                                 <input type="number" name="price" id="price" class="form-control"
-                                    formControlName="price" aria-describedby="helpId" />
-                                <small id="helpId" class="text-muted">Help text</small>
+                                    formControlName="price" />
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label for="description" class="form-label">Description</label>
                             <input type="text" name="description" id="description" class="form-control"
-                                formControlName="description" aria-describedby="helpId" />
-                            <small id="helpId" class="text-muted">Help text</small>
+                                formControlName="description" />
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Add Product</button>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Add</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
+
     <!-- Update Modal -->
     <div class="modal fade" id="productUpdateModal" tabindex="-1" aria-labelledby="productUpdateModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <form [formGroup]="productForm" (ngSubmit)="updateProduct()">
+                <form>
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="productAddModalLabel">Update Product</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -146,17 +143,15 @@
                         <div class="col">
                             <div class="mb-3">
                                 <label for="title" class="form-label">Product Name</label>
-                                <input type="text" name="title" id="title" class="form-control" formControlName="title"
-                                    aria-describedby="helpId" [value]="getProductByIdData?.title" />
-                                <small id="helpId" class="text-muted">Help text</small>
+                                <input type="text" name="title" id="title" class="form-control"
+                                    aria-describedby="helpId" [value]="getProductByIdData?.title" #updateTitle />
                             </div>
                         </div>
                         <div class="col">
                             <div class="mb-3">
                                 <label for="category" class="form-label">Product Name</label>
                                 <input type="text" name="category" id="category" class="form-control"
-                                    formControlName="category" aria-describedby="helpId"
-                                    [value]="getProductByIdData?.category" />
+                                    aria-describedby="helpId" [value]="getProductByIdData?.category" #updateCategory />
                                 <small id="helpId" class="text-muted">Help text</small>
                             </div>
                         </div>
@@ -164,8 +159,7 @@
                             <div class="mb-3">
                                 <label for="price" class="form-label">Price</label>
                                 <input type="number" name="price" id="price" class="form-control"
-                                    formControlName="price" aria-describedby="helpId"
-                                    [value]="getProductByIdData?.price" />
+                                    aria-describedby="helpId" [value]="getProductByIdData?.price" #updatePrice />
                                 <small id="helpId" class="text-muted">Help text</small>
                             </div>
                         </div>
@@ -173,14 +167,16 @@
                         <div class="mb-3">
                             <label for="description" class="form-label">Description</label>
                             <input type="text" name="description" id="description" class="form-control"
-                                formControlName="description" aria-describedby="helpId"
-                                [value]="getProductByIdData?.description" />
+                                aria-describedby="helpId" [value]="getProductByIdData?.description"
+                                #updateDescription />
                             <small id="helpId" class="text-muted">Help text</small>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Product</button>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
+                            (click)="updateProduct(updateTitle.value, updateCategory.value, updatePrice.value, updateDescription.value)">Update
+                            Product</button>
                     </div>
                 </form>
             </div>
