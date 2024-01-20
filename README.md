@@ -36,4 +36,4 @@ Projenin canlı demo versiyonunu incelemek ve etkileşimli olarak deneyimlemek i
 
 ### LinkedIn Profilim 🔗
 
-[muraterennar]('www.linkedin.com/in/muraterennar')
+[muraterennar](https://www.linkedin.com/in/muraterennar)
